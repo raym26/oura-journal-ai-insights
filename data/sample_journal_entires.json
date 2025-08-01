@@ -1,0 +1,32 @@
+[
+  {
+    "entry_date": "2025-07-31",
+    "entry_text": "Family time today as Ma is visiting. Feeling grateful for these moments together.",
+    "mood": "happy",
+    "tags": ["family", "gratitude"]
+  },
+  {
+    "entry_date": "2025-07-30", 
+    "entry_text": "Had a productive day working on personal projects. Sleep felt really good last night.",
+    "mood": "energetic",
+    "tags": ["productivity", "sleep", "projects"]
+  },
+  {
+    "entry_date": "2025-07-29",
+    "entry_text": "Job search continues. Feeling a bit anxious about the future but staying optimistic.",
+    "mood": "anxious",
+    "tags": ["career", "job search", "emotions"]
+  },
+  {
+    "entry_date": "2025-07-28",
+    "entry_text": "Wonderful wedding celebration for Paolo and Jord in Reno. Great food, music, and dancing!",
+    "mood": "joyful", 
+    "tags": ["family", "celebration", "travel"]
+  },
+  {
+    "entry_date": "2025-07-27",
+    "entry_text": "Preparing for the wedding trip. Excited to see family and celebrate this milestone.",
+    "mood": "excited",
+    "tags": ["family", "travel", "preparation"]
+  }
+]
