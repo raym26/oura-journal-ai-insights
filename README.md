@@ -10,20 +10,32 @@ A toy N8N project.  Personal wellness analysis system that correlates Oura sleep
 - **Actionable Recommendations**: Provides specific suggestions for better sleep and wellness
 
 ## 🏗️ Architecture
-┌─────────────────── n8n Workflow ───────────────────┐
-│                                                    │
-│  Automated Trigger (Daily/Weekly)                  │
-│           │                                        │
-│           ├──► Journal Database (SQLite)           │
-│           ├──► Oura API (Sleep Data)               │
-│           ├──► Weather API                         │
-│           │                                        │
-│           ├──► Data Correlation Engine             │
-│           ├──► AI Analysis (Claude/OpenRouter)     │
-│           └──► Daily Insights Report               │
-│                                                    │
-└────────────────────────────────────────────────────┘
-
+```
+Automated Trigger (Daily/Weekly)
+           ↓
+┌──────────────────────────────────┐
+│        Data Collection           │
+│  • Journal Database (SQLite)     │
+│  • Oura API (Sleep Data)         │
+│  • Weather API                   │
+└──────────────────────────────────┘
+           ↓
+┌──────────────────────────────────┐
+│     Data Correlation Engine      │
+│  • Match entries by date         │
+│  • Handle missing data           │
+│  • Format for analysis           │
+└──────────────────────────────────┘
+           ↓
+┌──────────────────────────────────┐
+│    AI Analysis & Insights        │
+│  • Claude/OpenRouter integration │
+│  • Pattern recognition           │
+│  • Recommendation generation     │
+└──────────────────────────────────┘
+           ↓
+      Daily Insights Report
+```
 ## 📊 Sample Insights
 
 The system analyzes correlations like:
