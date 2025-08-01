@@ -1,0 +1,567 @@
+{
+  "name": "local_business_intelligence_researcher",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        200
+      ],
+      "id": "65f90352-af58-4776-ab5d-d5c840be6df7",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "content": "## Send Report",
+        "height": 240,
+        "width": 340,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        120
+      ],
+      "id": "b2f21ec6-32b5-4199-a6b9-ed2d6a860230",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "sendTo": "raymondbzialcita@gmail.com",
+        "subject": "=Oura AI Summarizer Report for {{ $now.format('yyyy-MM-dd') }}",
+        "message": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1680,
+        200
+      ],
+      "id": "756a64e3-5a32-46f5-9f31-fcdaed7fcd47",
+      "name": "Send a message",
+      "webhookId": "9f6467e8-461a-4ab1-9372-42277228e81d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GXNbDOM0ayHR8sbi",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -420,
+        200
+      ],
+      "id": "094db0da-74da-4332-9417-b8fb35721c9c",
+      "name": "Schedule Trigger",
+      "notes": "Kicks off daily report of Oura sleep data"
+    },
+    {
+      "parameters": {
+        "url": "https://api.ouraring.com/v2/usercollection/daily_sleep",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "start_date",
+              "value": "={{new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]}}"
+            },
+            {
+              "name": "end_date",
+              "value": "={{new Date().toISOString().split('T')[0]}}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer LBGFISK5RZ6XAXTH7LVHN7PNLHAYXPN3"
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        200
+      ],
+      "id": "6a219b5e-54fb-4c00-b463-4d097fee5efa",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "q2n68Sv3NMjlvndu",
+          "name": "Header Auth account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Get Oura Data",
+        "height": 240,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        220,
+        120
+      ],
+      "id": "01221f32-f506-4054-84cd-d7a4213c5bf2",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "http://api.weatherapi.com/v1/history.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "=37.4419,-122.1430"
+            },
+            {
+              "name": "dt",
+              "value": "={{$json[\"day\"]}}"
+            },
+            {
+              "name": "key",
+              "value": "80e63c2f2001477698142814252307"
+            },
+            {
+              "name": "exclude",
+              "value": "minutely, alerts"
+            },
+            {
+              "name": "units",
+              "value": "metric"
+            },
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "COJZMFMJZTHVSYR6B6UNYI5H2ZOSAD22"
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        200
+      ],
+      "id": "1a3d3783-9af2-481e-ae55-610a02a2f77e",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "q2n68Sv3NMjlvndu",
+          "name": "Header Auth account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Get Weather Data",
+        "height": 240,
+        "width": 300,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        500,
+        120
+      ],
+      "id": "b818029c-7d67-4c6d-8099-37ba07b5cb39",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Get Journal Data",
+        "height": 240,
+        "width": 480,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        120
+      ],
+      "id": "72b49b15-82cd-438b-b930-94bfd089ce8e",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Analyze combined data",
+        "height": 360,
+        "width": 300,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        120
+      ],
+      "id": "0000e5e6-8136-40da-b608-76d2c46c32b7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get weather data from current step - this will be an array of weather responses\nconst allWeatherData = items;\n\n// Get sleep data\nlet sleepData = [];\ntry {\n  sleepData = $('HTTP Request').first().json.data;\n} catch (e) {\n  console.log(\"Could not get sleep data\");\n}\n\n// Get journal data directly from Store Journal node\nlet journalEntries = [];\ntry {\n  const storeJournalData = $('Store Journal').first().json;\n  journalEntries = storeJournalData.journal_data || [];\n} catch (e) {\n  journalEntries = [];\n}\n\n// Group journal entries by date\nconst journalByDate = {};\njournalEntries.forEach(entry => {\n  const date = entry.entry_date;\n  if (!journalByDate[date]) {\n    journalByDate[date] = [];\n  }\n  journalByDate[date].push(entry.entry_text);\n});\n\n// Create a weather lookup by date\nconst weatherByDate = {};\nallWeatherData.forEach(weatherItem => {\n  const weatherData = weatherItem.json;\n  if (weatherData.forecast && weatherData.forecast.forecastday && weatherData.forecast.forecastday[0]) {\n    const weatherDate = weatherData.forecast.forecastday[0].date;\n    const forecastDay = weatherData.forecast.forecastday[0];\n    weatherByDate[weatherDate] = {\n      temp_c: forecastDay.day.avgtemp_c,\n      max_temp_c: forecastDay.day.maxtemp_c,\n      min_temp_c: forecastDay.day.mintemp_c,\n      condition: forecastDay.day.condition.text,\n      humidity: forecastDay.day.avghumidity\n    };\n  }\n});\n\n// Get all unique dates from journal, sleep, and weather data\nconst allDates = new Set([\n  ...Object.keys(journalByDate),\n  ...sleepData.map(sleep => sleep.day),\n  ...Object.keys(weatherByDate)\n]);\n\n// Correlate all data by date\nconst correlatedData = Array.from(allDates).map(date => {\n  const journalForDate = journalByDate[date];\n  const sleepMatch = sleepData.find(sleep => sleep.day === date);\n  const weatherForDate = weatherByDate[date];\n  \n  return {\n    date: date,\n    journal: journalForDate ? {\n      entries_count: journalForDate.length,\n      combined_text: journalForDate.join(' | ')\n    } : null,\n    sleep: sleepMatch ? {\n      score: sleepMatch.score,\n      deep_sleep: sleepMatch.contributors.deep_sleep,\n      efficiency: sleepMatch.contributors.efficiency,\n      total_sleep: sleepMatch.contributors.total_sleep\n    } : null,\n    weather: weatherForDate || null\n  };\n}).filter(item => item.journal || item.sleep || item.weather);\n\nreturn correlatedData.map(item => ({ json: item }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        860,
+        200
+      ],
+      "id": "272f86a1-72bc-4bdf-b66f-c0211dc9ff11",
+      "name": "Final Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get Oura data from current step\nconst ouraData = items[0].json;\n\n// The journal data was lost because HTTP request only returns API response\n// So we need to reconstruct it here\nconsole.log(\"Oura data received:\", ouraData?.data?.length, \"records\");\n\n// Pass Oura data forward (we'll get journal differently)\nreturn [{ json: {\n  type: \"oura_passthrough\", \n  sleep_data: ouraData,\n  count: ouraData?.data?.length || 0\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        200
+      ],
+      "id": "72cddee4-1b7f-49af-b258-a708370885c5",
+      "name": "Combine"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get data from the manual entries node\nconst rawData = items[0].json;\n\nconsole.log(\"=== PROCESS JOURNAL DEBUG ===\");\nconsole.log(\"Raw data type:\", typeof rawData);\nconsole.log(\"Raw data keys:\", Object.keys(rawData || {}));\n\nlet journalEntries = [];\n\n// Extract the journal entries\nif (rawData.data && Array.isArray(rawData.data)) {\n  journalEntries = rawData.data;\n  console.log(\"Found journal data in .data property:\", journalEntries.length);\n} else if (Array.isArray(rawData)) {\n  journalEntries = rawData;\n  console.log(\"Raw data is array:\", journalEntries.length);\n} else {\n  console.log(\"Could not find journal data structure\");\n}\n\nconsole.log(\"First entry check:\", journalEntries[0] ? journalEntries[0].entry_text.substring(0, 50) : \"NO ENTRIES\");\n\nreturn [{ json: {\n  type: \"journal_processed\",\n  data: journalEntries,\n  count: journalEntries.length\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        200
+      ],
+      "id": "e643ec2f-d070-4c26-aafa-4951179495a5",
+      "name": "Journal Process Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get journal data and store it in the items for passing through\nconst journalData = items[0].json.data || items[0].json;\n\nconsole.log(\"Storing journal data:\", journalData?.length, \"entries\");\n\n// Return journal data to pass through the flow\nreturn [{ json: { \n  type: \"journal_passthrough\",\n  journal_data: journalData,\n  count: journalData?.length || 0\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        60,
+        200
+      ],
+      "id": "5cd2de74-05c9-4947-b283-f1d0dafd29ab",
+      "name": "Store Journal"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze this personal wellness data for patterns and insights:\n\n{{$json.formattedData}}\n\nPlease provide:\n\n**Sleep Analysis:**\n- Sleep score trends and patterns\n- Best and worst sleep days with scores\n\n**Journal Insights:**\n- Main themes and mood indicators  \n- Productivity patterns\n- Emotional themes\n\n**Weather Correlations:**\n- How weather might affect mood/sleep\n- Optimal conditions observed\n\n**Recommendations:**\n- 3 actionable steps for better sleep\n- 2 insights about productivity patterns\n- 1 weather-related wellness tip\n\nFormat as a personalized daily insight report.",
+        "options": {
+          "systemMessage": "You are analyzing personal data to find patterns and insights. You have access to:\n- Sleep data (scores, deep sleep, efficiency, total sleep time)\n- Journal entries (mood, activities, thoughts)\n- Weather data (temperature, conditions, humidity)\n\nThe data is structured by date. For each date, you may have one or more of these data types.\n\nAnalyze the data and provide insights about:\n1. Correlations between weather and sleep quality\n2. Correlations between weather and mood/journal sentiment\n3. Sleep patterns and their relationship to journal content\n4. Any notable patterns or trends across the time period\n5. Specific recommendations based on the patterns you observe\n\nPlease provide actionable insights and be specific about which dates show interesting patterns.\n\nData to analyze:\n{{$json}}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        200
+      ],
+      "id": "e30c04e6-5899-464d-b105-ce8738e440d2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-3-sonnet",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        340
+      ],
+      "id": "be5da6d8-e8da-48fd-9b12-26fca090108e",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "IkCFu7zyQNzKiANg",
+          "name": "OpenRouter account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Your actual recent journal entries from the database\nconst journalEntries = [\n  {\"entry_date\": \"2025-07-31\", \"entry_text\": \"Noel (brother in-law) and Liza(sis) have left for home. it's just Ma now that's here. the house is a little more empty. Javier here too. Now i need to help ma find things to do. I have to do less work (it's ok) to attend to her.\", \"mood\": \"neutral\", \"tags\": [\"family\"]},\n  {\"entry_date\": \"2025-07-28\", \"entry_text\": \"I have an interview with Hitachi tomorrow. A director level position; for a market intelligence job essentially.\", \"mood\": \"neutral\", \"tags\": [\"career\", \"goals\"]},\n  {\"entry_date\": \"2025-07-28\", \"entry_text\": \"just came back from Reno. It was paolo's and Jord's wedding celebration. The food was good. and the music and dancing capped off a great and fun event.\", \"mood\": \"happy\", \"tags\": [\"family\", \"friends\", \"travel\"]},\n  {\"entry_date\": \"2025-07-22\", \"entry_text\": \"i spoke to adnan yesterday as part of my JSC's Gratitude tour. as i talked, it became clearer to me what my sweet spot is -- market intelligence (research) meets market trends meets presenting insights.\", \"mood\": \"neutral\", \"tags\": [\"career\", \"goals\"]},\n  {\"entry_date\": \"2025-07-21\", \"entry_text\": \"tackling my first N8N project. I will be creating an agent analyzing my oura data and then sending an email daily for my report\", \"mood\": \"neutral\", \"tags\": [\"coding\", \"project\", \"health\"]},\n  {\"entry_date\": \"2025-07-18\", \"entry_text\": \"I got rejections from both Marvell and Nvidia. When am i going to catch a break? still deflated.\", \"mood\": \"sad\", \"tags\": [\"career\", \"goals\"]}\n];\n\nreturn [{ json: {\n  type: \"journal_source_data\",\n  data: journalEntries,\n  count: journalEntries.length\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        200
+      ],
+      "id": "6cb5e5ee-3281-489d-bffd-4cc630be2aa9",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "sleep_data.data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        540,
+        200
+      ],
+      "id": "3bae6686-8d48-48b3-b05b-714cace72e41",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the correlation data\nconst correlationData = items;\nconsole.log(\"=== FORMAT FOR AI DEBUG ===\");\nconsole.log(\"Total correlation items:\", correlationData.length);\n\n// Check what journal data exists in correlation\ncorrelationData.forEach((item, index) => {\n  const data = item.json;\n  console.log(`Item ${index} - Date: ${data.date}`);\n  console.log(`  - Has journal: ${!!data.journal}`);\n  console.log(`  - Has sleep: ${!!data.sleep}`);\n  console.log(`  - Has weather: ${!!data.weather}`);\n  if (data.journal) {\n    console.log(`  - Journal entries count: ${data.journal.entries_count}`);\n    console.log(`  - Journal text preview: ${data.journal.combined_text.substring(0, 50)}...`);\n  }\n});\n\n// Convert to a readable text format for the AI\nlet analysisText = \"Personal Wellness Data Analysis:\\n\\n\";\n\ncorrelationData.forEach((item, index) => {\n  const data = item.json;\n  analysisText += `=== Entry ${index + 1}: ${data.date} ===\\n`;\n  \n  if (data.journal) {\n    analysisText += `JOURNAL (${data.journal.entries_count} entries):\\n`;\n    analysisText += `${data.journal.combined_text}\\n\\n`;\n  }\n  \n  if (data.sleep) {\n    analysisText += `SLEEP DATA:\\n`;\n    analysisText += `- Sleep Score: ${data.sleep.score}/100\\n`;\n    analysisText += `- Deep Sleep Score: ${data.sleep.deep_sleep}/100\\n`;\n    analysisText += `- Sleep Efficiency: ${data.sleep.efficiency}%\\n`;\n    analysisText += `- Total Sleep Score: ${data.sleep.total_sleep}/100\\n\\n`;\n  }\n  \n  if (data.weather) {\n    analysisText += `WEATHER:\\n`;\n    analysisText += `- Temperature: ${data.weather.temp_c}°C\\n`;\n    if (data.weather.max_temp_c) {\n      analysisText += `- Max/Min: ${data.weather.max_temp_c}°C / ${data.weather.min_temp_c}°C\\n`;\n    }\n    analysisText += `- Condition: ${data.weather.condition}\\n`;\n    analysisText += `- Humidity: ${data.weather.humidity}%\\n\\n`;\n  }\n  \n  analysisText += \"---\\n\\n\";\n});\n\nconsole.log(\"Final analysis text length:\", analysisText.length);\nconsole.log(\"Analysis text sample:\", analysisText.substring(0, 500));\n\n// Return formatted text for AI analysis\nreturn [{ json: { \n  formattedData: analysisText,\n  totalEntries: correlationData.length,\n  summary: {\n    datesWithJournal: correlationData.filter(item => item.json.journal).length,\n    datesWithSleep: correlationData.filter(item => item.json.sleep).length,\n    datesWithWeather: correlationData.filter(item => item.json.weather).length\n  }\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        980,
+        200
+      ],
+      "id": "1132137a-ba90-471f-b5f3-76c30350f778",
+      "name": "Prep for AI"
+    },
+    {
+      "parameters": {
+        "content": "## Merge all data",
+        "height": 240,
+        "width": 300,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        820,
+        120
+      ],
+      "id": "6e4ba014-46c4-469d-89b8-e8e785ff7c2e",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Combine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Final Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Merge": {
+      "main": [
+        [
+          {
+            "node": "Prep for AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Journal Process Code": {
+      "main": [
+        [
+          {
+            "node": "Store Journal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Journal": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Journal Process Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep for AI": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ad8398aa-5f32-4bb6-b280-55a47fa42132",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d5637416f482b500d9408217c5ba4d13d3364990095e4c5706a74de6a82b5200"
+  },
+  "id": "XHDsMO6dl26ZcSmB",
+  "tags": [
+    {
+      "createdAt": "2025-07-08T17:14:56.896Z",
+      "updatedAt": "2025-07-08T17:14:56.896Z",
+      "id": "CdHrVdLFtElxzqmv",
+      "name": "orchestrator"
+    },
+    {
+      "createdAt": "2025-07-03T18:10:45.464Z",
+      "updatedAt": "2025-07-03T18:10:45.464Z",
+      "id": "EbASLfyfusCPIlFo",
+      "name": "search"
+    },
+    {
+      "createdAt": "2025-07-03T18:10:45.484Z",
+      "updatedAt": "2025-07-03T18:10:45.484Z",
+      "id": "oANWMYgfb42zhhCb",
+      "name": "exa"
+    }
+  ]
+}
